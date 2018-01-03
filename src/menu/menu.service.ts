@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { Category } from '../model/category.model';
-import { Product } from '../model/product.model';
+import { Category } from './category.model';
+import { Product } from './product.model';
 
 
 interface ProductData {

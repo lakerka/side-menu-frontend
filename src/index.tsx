@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { MenuComponent } from "./components/menu.component";
+import { MenuComponent } from "./menu/menu.component";
 
 ReactDOM.render(
     <MenuComponent/>,
