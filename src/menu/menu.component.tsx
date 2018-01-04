@@ -3,19 +3,27 @@ import * as React from "react";
 import { MenuService } from "./menu.service";
 import { Category } from "./category.model";
 import { Product } from "./product.model";
+import * as styles from "./menu.style.scss";
 
 
 const MenuItem = (item: Category|Product): JSX.Element => {
+  let prefix = item instanceof Category ? "Category" : "Product";
+  let hasChildren = item instanceof Category && item.children.length > 0;
+  let children = hasChildren ? (item as Category).children.map(MenuItem) : [];
   return (
-    <ul>
-        <li>
-        { item.name }
-        { item instanceof Category ? item.children.map(MenuItem) : "" }
-        </li>
-    </ul>
+    <li key={ prefix + item.id.toString() }>
+      { hasChildren &&
+        <span className={ styles.indicator + " glyphicon glyphicon-plus-sign" }></span>
+      }
+      { item.name }
+      { hasChildren &&
+        <ul>
+         { children }
+        </ul>
+      }
+    </li>
   );
 }
-
 
 export class MenuComponent extends React.Component<any, {category: Category}> {
   constructor(props: any){
@@ -36,58 +44,14 @@ export class MenuComponent extends React.Component<any, {category: Category}> {
       <div className="container" style={{ marginTop: "30px" }}>
         <div className="row">
           <div className="col-md-4">
-            { this.state !== null ? MenuItem(this.state.category) : "" }
+            <ul className={ styles.tree }>
+              { this.state !== null &&
+                MenuItem(this.state.category)
+              }
+            </ul>
           </div>
         </div>
       </div>
     );
   }
-  // render() {
-  //   return (
-  //     <div className="container" style={{ marginTop: '30px' }}>
-  //       <div className="row">
-  //           <div className="col-md-4">
-  //               <ul>
-  //                   <li>TECH
-  //                       <ul>
-  //                           <li>Company Maintenance</li>
-  //                           <li>Employees
-  //                               <ul>
-  //                                   <li>Reports
-  //                                       <ul>
-  //                                           <li>Report1</li>
-  //                                           <li>Report2</li>
-  //                                           <li>Report3</li>
-  //                                       </ul>
-  //                                   </li>
-  //                                   <li>Employee Maint.</li>
-  //                               </ul>
-  //                           </li>
-  //                           <li>Human Resources</li>
-  //                       </ul>
-  //                   </li>
-  //                   <li>XRP
-  //                       <ul>
-  //                           <li>Company Maintenance</li>
-  //                           <li>Employees
-  //                               <ul>
-  //                                   <li>Reports
-  //                                       <ul>
-  //                                           <li>Report1</li>
-  //                                           <li>Report2</li>
-  //                                           <li>Report3</li>
-  //                                       </ul>
-  //                                   </li>
-  //                                   <li>Employee Maint.</li>
-  //                               </ul>
-  //                           </li>
-  //                           <li>Human Resources</li>
-  //                       </ul>
-  //                   </li>
-  //               </ul>
-  //           </div>
-  //       </div>
-  //   </div>
-  //   );
-  // }
 }

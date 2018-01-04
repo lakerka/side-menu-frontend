@@ -1,5 +1,8 @@
+var path = require("path");
+
 module.exports = {
   entry: "./src/index.tsx",
+
   output: {
     filename: "bundle.js",
     path: __dirname + "/dist"
@@ -14,7 +17,36 @@ module.exports = {
   },
 
   module: {
-    rules: [
+    rules: [{
+        test: /\.scss$/,
+        use: [{
+            loader: "style-loader" // creates style nodes from JS strings
+          },
+          {
+            loader: "css-loader", // translates CSS into CommonJS
+            options: {
+              modules: true,
+              camelCase: true,
+              sourceMap: true
+            }
+          },
+          {
+            loader: "sass-loader", // compiles Sass to CSS
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
+      },
+
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: "url-loader",
+        options: {
+          limit: 100000
+        }
+      },
+
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       {
         test: /\.tsx?$/,
@@ -27,11 +59,8 @@ module.exports = {
         test: /\.js$/,
         loader: "source-map-loader"
       }
-    ],
-    loaders: [{
-      test: /\.css$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-    }]
+
+    ]
   },
 
   // When importing a module whose path matches one of the following, just
@@ -41,5 +70,5 @@ module.exports = {
   externals: {
     "react": "React",
     "react-dom": "ReactDOM"
-  },
+  }
 };

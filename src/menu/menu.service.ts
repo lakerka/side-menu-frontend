@@ -5,6 +5,7 @@ import { Product } from './product.model';
 
 
 interface ProductData {
+  id: number;
   name: string;
   children?: Array<ProductData>;
   price?: number;
@@ -17,9 +18,13 @@ export class MenuService {
     }
     let parsed;
     if (data.hasOwnProperty('children')) {
-      parsed = new Category(data.name, data.children.map(MenuService.fromData));
+      parsed = new Category(
+        data.id,
+        data.name,
+        data.children.map(MenuService.fromData)
+      );
     } else {
-      parsed = new Product(data.name, data.price);
+      parsed = new Product(data.id, data.name, data.price);
     }
     return parsed;
   }
