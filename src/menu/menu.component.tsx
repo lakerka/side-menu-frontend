@@ -26,14 +26,24 @@ export class CategoryMenuItemComponent extends React.Component<{item: Category, 
   constructor(props: any) {
       super(props);
       this.state = { isExpanded: this.props.isExpanded };
+      this.handleChildClick = this.handleChildClick.bind(this);
       this.handleClick = this.handleClick.bind(this);
       this.getChild = this.getChild.bind(this);
+      this.hasChildren = this.hasChildren.bind(this);
+  }
+
+  hasChildren() {
+    return this.props.item.children.length > 0;
+  }
+
+  handleChildClick(event: React.MouseEvent<HTMLUListElement>) {
+      event.preventDefault();
   }
 
   handleClick(event: React.MouseEvent<HTMLLIElement>) {
-    let hasChildren = this.props.item.children.length > 0;
-    if (hasChildren) {
+    if (!event.isDefaultPrevented() && this.hasChildren()) {
       this.setState({ isExpanded: !this.state.isExpanded });
+      event.preventDefault();
     }
   }
 
@@ -54,14 +64,15 @@ export class CategoryMenuItemComponent extends React.Component<{item: Category, 
 
   render() {
     let item = this.props.item;
-    let hasChildren = item.children.length > 0;
+    let hasChildren = this.hasChildren();
     let children = item.children.map(this.getChild);
     let spanClass = styles.indicator + " glyphicon";
-    if (this.state.isExpanded) {
+    if (this.state.isExpanded && hasChildren) {
       spanClass += " glyphicon-plus-sign";
     } else {
       spanClass += " glyphicon-minus-sign";
     }
+    let childrenClass = this.state.isExpanded ? "" : "hidden";
     return (
       <li onClick={ this.handleClick }>
         { hasChildren &&
@@ -69,7 +80,7 @@ export class CategoryMenuItemComponent extends React.Component<{item: Category, 
         }
         { item.name }
         { hasChildren &&
-          <ul>
+          <ul className={ childrenClass } onClick={ this.handleChildClick }>
            { children }
           </ul>
         }
