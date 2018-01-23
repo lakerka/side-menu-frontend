@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { Category } from './category.model';
-import { Product } from './product.model';
+import { Category } from "./category.model";
+import { Product } from "./product.model";
 
 
 interface ProductData {
@@ -17,7 +17,7 @@ export class MenuService {
       return undefined;
     }
     let parsed;
-    if (data.hasOwnProperty('children')) {
+    if (data.hasOwnProperty("children")) {
       parsed = new Category(
         data.id,
         data.name,
@@ -30,7 +30,7 @@ export class MenuService {
   }
 
   static getTree(): Promise<Category|undefined> {
-    return axios.get('/menu/tree')
+    return axios.get("/menu/tree")
       .then((promise) => {
         let cateogry =  <Category|undefined> MenuService.fromData(promise.data);
         return cateogry;
