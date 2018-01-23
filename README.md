@@ -1,13 +1,15 @@
 # side-menu-frontend
+Frontend application that renders menu tree items. Menu styles were taken from [bootsnipp](https://bootsnipp.com/snippets/yplrV).
 
-Application uses Typescript.
+## Technologies
+Application uses React library with Typescript language. Package bundling handles Webpack. During development node v7.8.0 and npm 4.2.0 were used.
 
+## Development
+Generate files in `dist` directory (bundle application files):
+```sh
+webpack --watch 
+```
 
-Versions:
-node v7.8.0
-npm 4.2.0
-webpack 3.10.0
-webpack-dev-server 2.9.7
-
-
-Menu style taken from (here)[https://bootsnipp.com/snippets/yplrV].
+### Note
+In production environment files should be minimised to save up space.
+Since styles worked from first time I did not need to use css sourcemaps so I don't know if the work.
